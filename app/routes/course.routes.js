@@ -9,5 +9,11 @@ module.exports = (app) => {
   // Retrieve all Courses
   router.get("/", courses.findAll);
 
+  // Retrieve courses for a subject
+  router.get("/:subject", courses.findBySubject);
+
+  // Retrieve courses for a subject
+  router.post("/increment/:courseId", courses.incrementViews);
+
   app.use("/api/courses", router);
 };

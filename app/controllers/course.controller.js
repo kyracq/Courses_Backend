@@ -17,6 +17,7 @@ exports.create = (request, response) => {
     viewCount: 0,
     imageUrl: request.body.imageUrl,
     subject: request.body.subject,
+    duration: request.body.duration,
   });
 
   // Save Course in the database
@@ -42,6 +43,50 @@ exports.findAll = (request, response) => {
     .catch((err) => {
       response.status(500).send({
         message: err.message || "Some error occurred while retrieving courses.",
+      });
+    });
+};
+
+// Retrieve all Courses from the database by subject.
+exports.findBySubject = (request, response) => {
+  const subject = request.params.subject;
+  const condition = subject ? { subject: subject } : {};
+  Course.find(condition)
+    .then((data) => {
+      response.send(data);
+    })
+    .catch((err) => {
+      response.status(500).send({
+        message: err.message || "Some error occurred while retrieving courses.",
+      });
+    });
+};
+
+// Find course and increment view count by 1
+exports.incrementViews = (request, response) => {
+  // Validate request
+  if (!request.params.courseId) {
+    response.status(400).send({ message: "CourseId param missing" });
+    return;
+  }
+
+  Course.findByIdAndUpdate(request.params.courseId, { $inc: { viewCount: 1 } })
+    .then((course) => {
+      if (!course) {
+        return response.status(404).send({
+          message: "Course not found with id " + request.params.courseId,
+        });
+      }
+      response.send(course);
+    })
+    .catch((err) => {
+      if (err.kind === "ObjectId") {
+        return response.status(404).send({
+          message: "Course not found with id " + request.params.courseId,
+        });
+      }
+      return response.status(500).send({
+        message: "Error updating course with id " + request.params.courseId,
       });
     });
 };

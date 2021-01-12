@@ -9,6 +9,7 @@ module.exports = (mongoose) => {
         viewCount: Number,
         imageUrl: String,
         subject: String,
+        duration: String,
       },
       { timestamps: true }
     )

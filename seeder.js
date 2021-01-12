@@ -4,7 +4,7 @@ db.mongoose.connect(db.url, {
   useUnifiedTopology: true,
 });
 
-db.courses.collection.drop();
+db.courses.collection.drop().catch();
 
 db.courses
   .create([
@@ -29,11 +29,11 @@ db.courses
       duration: "3h 30m",
     },
     {
-      title: "Microecomonics 101",
-      description: "Introductory course in Microecomonics",
+      title: "Microecomonics 201",
+      description: "Second level course in Microecomonics",
       author: "Jane Doe",
       viewCount: 0,
-      duration: "5h 24m",
+      duration: "4h 32m",
       imageUrl:
         "https://www.misesboston.com/wp-content/uploads/2015/05/us-money-1000x750.jpg",
       subject: "Social Sciences",
